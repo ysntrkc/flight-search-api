@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ysntrkc.flightsearchapi.handler.ResponseHandler;
 import com.ysntrkc.flightsearchapi.implementation.AirportServiceImpl;
 import com.ysntrkc.flightsearchapi.model.Airport;
 
@@ -26,47 +27,50 @@ public class AirportController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Airport>> getAll() {
+	public ResponseEntity<Object> getAll() {
 		List<Airport> airports = airportService.getAll();
-		return new ResponseEntity<>(airports, HttpStatus.OK);
+		return ResponseHandler.generateResponse("Airports retrieved successfully.", HttpStatus.OK, airports);
 	}
 
 	@GetMapping("/{airportId}")
-	public ResponseEntity<Airport> getById(@PathVariable int airportId) {
+	public ResponseEntity<Object> getById(@PathVariable int airportId) {
 		return airportService.getById(airportId)
-				.map(airport -> new ResponseEntity<>(airport, HttpStatus.OK))
-				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+				.map(airport -> ResponseHandler.generateResponse("Airport retrieved successfully.", HttpStatus.OK,
+						airport))
+				.orElse(ResponseHandler.generateResponse("Airport not found.", HttpStatus.NOT_FOUND, null));
 	}
 
 	@GetMapping("/city/{city}")
-	public ResponseEntity<Airport> getByCity(@PathVariable String city) {
+	public ResponseEntity<Object> getByCity(@PathVariable String city) {
 		Airport airport = airportService.getByCity(city);
 		if (airport != null) {
-			return new ResponseEntity<>(airport, HttpStatus.OK);
+			return ResponseHandler.generateResponse("Airport retrieved successfully.", HttpStatus.OK, airport);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return ResponseHandler.generateResponse("Airport not found.", HttpStatus.NOT_FOUND, null);
 	}
 
 	@PostMapping
-	public ResponseEntity<Airport> create(Airport airport) {
-		return new ResponseEntity<>(airportService.create(airport), HttpStatus.CREATED);
+	public ResponseEntity<Object> create(Airport airport) {
+		Airport createdAirport = airportService.create(airport);
+		return ResponseHandler.generateResponse("Airport created successfully.", HttpStatus.CREATED, createdAirport);
 	}
 
 	@PutMapping("/{airportId}")
-	public ResponseEntity<Airport> update(@PathVariable int airportId, Airport updatedAirport) {
+	public ResponseEntity<Object> update(@PathVariable int airportId, Airport updatedAirport) {
 		Airport airport = airportService.update(airportId, updatedAirport);
 		if (airport != null) {
-			return new ResponseEntity<>(airport, HttpStatus.OK);
+			return ResponseHandler.generateResponse("Airport updated successfully.", HttpStatus.OK, airport);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return ResponseHandler.generateResponse("Airport not found.", HttpStatus.NOT_FOUND, null);
 	}
 
 	@DeleteMapping("/{airportId}")
-	public ResponseEntity<Airport> delete(@PathVariable int airportId) {
-		if (airportService.delete(airportId)) {
-			return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<Object> delete(@PathVariable int airportId) {
+		boolean isDeleted = airportService.delete(airportId);
+		if (isDeleted) {
+			return ResponseHandler.generateResponse("Airport deleted successfully.", HttpStatus.OK, null);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return ResponseHandler.generateResponse("Airport not found.", HttpStatus.NOT_FOUND, null);
 	}
 
 }

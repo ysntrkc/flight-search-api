@@ -1,11 +1,13 @@
 package com.ysntrkc.flightsearchapi.service;
 
-import com.ysntrkc.flightsearchapi.model.Airport;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 
+import com.ysntrkc.flightsearchapi.model.Airport;
+
+@Service
 public interface AirportService {
 
 	List<Airport> getAll();
