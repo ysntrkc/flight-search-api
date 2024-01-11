@@ -1,56 +1,23 @@
 package com.ysntrkc.flightsearchapi.service;
 
+import com.ysntrkc.flightsearchapi.model.Airport;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 
-import com.ysntrkc.flightsearchapi.model.Airport;
-import com.ysntrkc.flightsearchapi.repository.AirportRepository;
+public interface AirportService {
 
-@Service
-public class AirportService {
+	List<Airport> getAll();
 
-	private AirportRepository airportRepository;
+	Optional<Airport> getById(int airportId);
 
-	public AirportService(AirportRepository airportRepository) {
-		this.airportRepository = airportRepository;
-	}
+	Airport getByCity(String city);
 
-	public List<Airport> getAll() {
-		return airportRepository.findAll();
-	}
+	Airport create(Airport airport);
 
-	public Optional<Airport> getById(int airportId) {
-		return airportRepository.findById(airportId);
-	}
+	Airport update(int airportId, Airport updatedAirport);
 
-	public Airport getByCity(String city) {
-		return airportRepository.findByCity(city);
-	}
-
-	public Airport create(Airport airport) {
-		return airportRepository.save(airport);
-	}
-
-	public Airport update(int airportId, Airport updatedAirport) {
-		Optional<Airport> existingAirport = airportRepository.findById(airportId);
-
-		if (existingAirport.isPresent()) {
-			Airport airportToUpdate = existingAirport.get();
-			airportToUpdate.setCity(updatedAirport.getCity());
-			return airportRepository.save(airportToUpdate);
-		}
-
-		return null;
-	}
-
-	public boolean delete(int airportId) {
-		if (airportRepository.existsById(airportId)) {
-			airportRepository.deleteById(airportId);
-			return true;
-		}
-		return false;
-	}
+	boolean delete(int airportId);
 
 }
