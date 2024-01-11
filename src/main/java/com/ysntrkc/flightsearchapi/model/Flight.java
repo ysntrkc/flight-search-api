@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -20,11 +21,11 @@ public class Flight {
 	private int id;
 
 	@ManyToOne
-	@Column(name = "departure_airport_id")
+	@JoinColumn(name = "departure_airport_id")
 	private Airport departureAirport;
 
 	@ManyToOne
-	@Column(name = "arrival_airport_id")
+	@JoinColumn(name = "arrival_airport_id")
 	private Airport arrivalAirport;
 
 	@Column(name = "departure_time")

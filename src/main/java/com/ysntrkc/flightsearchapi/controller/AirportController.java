@@ -23,7 +23,7 @@ public class AirportController {
 		this.airportService = airportService;
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<List<Airport>> getAll() {
 		List<Airport> airports = airportService.getAll();
 		return new ResponseEntity<>(airports, HttpStatus.OK);
@@ -34,6 +34,15 @@ public class AirportController {
 		return airportService.getById(airportId)
 				.map(airport -> new ResponseEntity<>(airport, HttpStatus.OK))
 				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
+	@GetMapping("/city/{city}")
+	public ResponseEntity<Airport> getByCity(@PathVariable String city) {
+		Airport airport = airportService.getByCity(city);
+		if (airport != null) {
+			return new ResponseEntity<>(airport, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

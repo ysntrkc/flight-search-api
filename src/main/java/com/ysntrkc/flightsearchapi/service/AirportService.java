@@ -25,6 +25,10 @@ public class AirportService {
 		return airportRepository.findById(airportId);
 	}
 
+	public Airport getByCity(String city) {
+		return airportRepository.findByCity(city);
+	}
+
 	public Airport create(Airport airport) {
 		return airportRepository.save(airport);
 	}
