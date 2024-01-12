@@ -2,6 +2,8 @@ package com.ysntrkc.flightsearchapi.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "\"Flights\"")
@@ -22,30 +26,38 @@ public class Flight {
 
 	@ManyToOne
 	@JoinColumn(name = "departure_airport_id")
+	@NotNull(message = "Departure airport is mandatory")
 	private Airport departureAirport;
 
 	@ManyToOne
 	@JoinColumn(name = "arrival_airport_id")
+	@NotNull(message = "Arrival airport is mandatory")
 	private Airport arrivalAirport;
 
-	@Column(name = "departure_time")
-	private Date departureTime;
+	@Column(name = "departure_date")
+	@NotNull(message = "Departure time is mandatory")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	// gidiş tarihi
+	private Date departureDate;
 
-	@Column(name = "arrival_time")
-	private Date arrivalTime;
+	@Column(name = "return_date")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private Date returnDate;
 
 	@Column(name = "price")
+	@NotNull(message = "Price is mandatory")
+	@Min(value = 0, message = "Price must be greater than 0")
 	private Double price;
 
 	public Flight() {
 	}
 
-	public Flight(Airport departureAirport, Airport arrivalAirport, Date departureTime, Date arrivalTime,
+	public Flight(Airport departureAirport, Airport arrivalAirport, Date departureDate, Date returnDate,
 			Double price) {
 		this.departureAirport = departureAirport;
 		this.arrivalAirport = arrivalAirport;
-		this.departureTime = departureTime;
-		this.arrivalTime = arrivalTime;
+		this.departureDate = departureDate;
+		this.returnDate = returnDate;
 		this.price = price;
 	}
 
@@ -69,20 +81,20 @@ public class Flight {
 		this.arrivalAirport = arrivalAirport;
 	}
 
-	public Date getDepartureTime() {
-		return departureTime;
+	public Date getDepartureDate() {
+		return departureDate;
 	}
 
-	public void setDepartureTime(Date departureTime) {
-		this.departureTime = departureTime;
+	public void setDepartureDate(Date departureTime) {
+		this.departureDate = departureTime;
 	}
 
-	public Date getArrivalTime() {
-		return arrivalTime;
+	public Date getReturnDate() {
+		return returnDate;
 	}
 
-	public void setArrivalTime(Date arrivalTime) {
-		this.arrivalTime = arrivalTime;
+	public void setReturnDate(Date arrivalTime) {
+		this.returnDate = arrivalTime;
 	}
 
 	public Double getPrice() {
@@ -96,7 +108,7 @@ public class Flight {
 	@Override
 	public String toString() {
 		return "Flight [id=" + id + ", departureAirport=" + departureAirport + ", arrivalAirport=" + arrivalAirport
-				+ ", departureTime=" + departureTime + ", arrivalTime=" + arrivalTime + ", price=" + price + "]";
+				+ ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", price=" + price + "]";
 	}
 
 }

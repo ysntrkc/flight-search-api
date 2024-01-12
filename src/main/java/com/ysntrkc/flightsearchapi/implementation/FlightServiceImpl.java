@@ -30,6 +30,10 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public Flight create(Flight flight) {
+		// TODO: Check if the flight already exists
+		if (flight == null) {
+			return null;
+		}
 		return flightRepository.save(flight);
 	}
 
@@ -41,8 +45,8 @@ public class FlightServiceImpl implements FlightService {
 			Flight flightToUpdate = existingFlight.get();
 			flightToUpdate.setDepartureAirport(updatedFlight.getDepartureAirport());
 			flightToUpdate.setArrivalAirport(updatedFlight.getArrivalAirport());
-			flightToUpdate.setDepartureTime(updatedFlight.getDepartureTime());
-			flightToUpdate.setArrivalTime(updatedFlight.getArrivalTime());
+			flightToUpdate.setDepartureDate(updatedFlight.getDepartureDate());
+			flightToUpdate.setReturnDate(updatedFlight.getReturnDate());
 			flightToUpdate.setPrice(updatedFlight.getPrice());
 			return flightRepository.save(flightToUpdate);
 		}

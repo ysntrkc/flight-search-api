@@ -35,6 +35,9 @@ public class AirportServiceImpl implements AirportService {
 
 	@Override
 	public Airport create(Airport airport) {
+		if (airportRepository.findByCity(airport.getCity()) != null) {
+			return null;
+		}
 		return airportRepository.save(airport);
 	}
 
