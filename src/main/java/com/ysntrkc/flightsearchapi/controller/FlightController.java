@@ -43,7 +43,11 @@ public class FlightController {
 	@PostMapping
 	public ResponseEntity<Object> create(Flight flight) {
 		Flight createdFlight = flightService.create(flight);
-		return ResponseHandler.generateResponse("Flight created successfully.", HttpStatus.CREATED, createdFlight);
+		if (createdFlight != null) {
+			return ResponseHandler.generateResponse("Flight created successfully.", HttpStatus.CREATED,
+					createdFlight);
+		}
+		return ResponseHandler.generateResponse("Flight not created.", HttpStatus.BAD_REQUEST, null);
 	}
 
 	@PutMapping("/{flightId}")

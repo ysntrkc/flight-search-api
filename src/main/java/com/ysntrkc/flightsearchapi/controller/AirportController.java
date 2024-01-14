@@ -52,7 +52,11 @@ public class AirportController {
 	@PostMapping
 	public ResponseEntity<Object> create(Airport airport) {
 		Airport createdAirport = airportService.create(airport);
-		return ResponseHandler.generateResponse("Airport created successfully.", HttpStatus.CREATED, createdAirport);
+		if (createdAirport != null) {
+			return ResponseHandler.generateResponse("Airport created successfully.", HttpStatus.CREATED,
+					createdAirport);
+		}
+		return ResponseHandler.generateResponse("Airport already exists.", HttpStatus.CONFLICT, null);
 	}
 
 	@PutMapping("/{airportId}")

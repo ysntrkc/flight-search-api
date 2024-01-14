@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 @Entity
 @Table(name = "\"Flights\"")
@@ -35,9 +36,8 @@ public class Flight {
 	private Airport arrivalAirport;
 
 	@Column(name = "departure_date")
-	@NotNull(message = "Departure time is mandatory")
+	@NotNull(message = "Departure date is mandatory")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-	// gidiş tarihi
 	private Date departureDate;
 
 	@Column(name = "return_date")

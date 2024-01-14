@@ -30,8 +30,9 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public Flight create(Flight flight) {
-		// TODO: Check if the flight already exists
 		if (flight == null) {
+			return null;
+		} else if (flight.getReturnDate() != null && (flight.getReturnDate().before(flight.getDepartureDate()))) {
 			return null;
 		}
 		return flightRepository.save(flight);

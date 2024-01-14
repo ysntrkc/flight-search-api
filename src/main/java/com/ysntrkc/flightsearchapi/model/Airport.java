@@ -6,10 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "\"Airports\"")
+@Table(name = "\"Airports\"", uniqueConstraints = { @UniqueConstraint(columnNames = { "city" }) })
 public class Airport {
 
 	@Id
