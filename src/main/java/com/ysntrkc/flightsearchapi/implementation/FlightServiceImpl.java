@@ -70,6 +70,7 @@ public class FlightServiceImpl implements FlightService {
 	}
 
 	@Override
+	// return count of flights
 	public List<Flight> search(int departureAirportId, int arrivalAirportId, Date departureDate,
 			Date returnDate) {
 		if (departureAirportId == 0 || arrivalAirportId == 0) {

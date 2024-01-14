@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ysntrkc.flightsearchapi.handler.ResponseHandler;
 import com.ysntrkc.flightsearchapi.implementation.FlightServiceImpl;
-import com.ysntrkc.flightsearchapi.model.Airport;
 import com.ysntrkc.flightsearchapi.model.Flight;
 
 @RestController
