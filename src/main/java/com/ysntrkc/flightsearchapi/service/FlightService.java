@@ -1,5 +1,6 @@
 package com.ysntrkc.flightsearchapi.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +20,7 @@ public interface FlightService {
 	Flight update(int flightId, Flight updatedFlight);
 
 	boolean delete(int flightId);
+
+	List<Flight> search(int departureAirportId, int arrivalAirportId, Date departureDate, Date returnDate);
 
 }

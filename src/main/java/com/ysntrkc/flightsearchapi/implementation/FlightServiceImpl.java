@@ -1,11 +1,14 @@
 package com.ysntrkc.flightsearchapi.implementation;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ysntrkc.flightsearchapi.model.Airport;
 import com.ysntrkc.flightsearchapi.model.Flight;
+import com.ysntrkc.flightsearchapi.repository.AirportRepository;
 import com.ysntrkc.flightsearchapi.repository.FlightRepository;
 import com.ysntrkc.flightsearchapi.service.FlightService;
 
@@ -13,9 +16,11 @@ import com.ysntrkc.flightsearchapi.service.FlightService;
 public class FlightServiceImpl implements FlightService {
 
 	private FlightRepository flightRepository;
+	private AirportRepository airportRepository;
 
-	public FlightServiceImpl(FlightRepository flightRepository) {
+	public FlightServiceImpl(FlightRepository flightRepository, AirportRepository airportRepository) {
 		this.flightRepository = flightRepository;
+		this.airportRepository = airportRepository;
 	}
 
 	@Override
@@ -62,6 +67,35 @@ public class FlightServiceImpl implements FlightService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Flight> search(int departureAirportId, int arrivalAirportId, Date departureDate,
+			Date returnDate) {
+		if (departureAirportId == 0 || arrivalAirportId == 0) {
+			return null;
+		}
+
+		Airport departureAirport = airportRepository.findById(departureAirportId).map(airport -> airport).orElse(null);
+		Airport arrivalAirport = airportRepository.findById(arrivalAirportId).map(airport -> airport).orElse(null);
+		if (departureAirport == null || arrivalAirport == null) {
+			return null;
+		}
+
+		if (departureDate == null && returnDate == null) {
+			return flightRepository.findByDepartureAirportAndArrivalAirport(departureAirport, arrivalAirport);
+		} else if (returnDate == null) {
+			return flightRepository.findByDepartureAirportAndArrivalAirportAndDepartureDate(
+					departureAirport,
+					arrivalAirport,
+					departureDate);
+		} else {
+			return flightRepository.findByDepartureAirportAndArrivalAirportAndDepartureDateAndReturnDate(
+					departureAirport,
+					arrivalAirport,
+					departureDate,
+					returnDate);
+		}
 	}
 
 }
